@@ -1,11 +1,13 @@
 import React from 'react';
 import './App.css';
-import TasksDashboard from './components/tasks/tasks-dashboard';
+import { Provider } from 'react-redux';
+import store from './store/store';
+import TasksList from './components/tasks/tasks-list';
 
 function App() {
-  return <>
-    <TasksDashboard />
-  </>
+  return <Provider store={store}>
+    <TasksList />
+  </Provider>
 }
 
 export default App;
