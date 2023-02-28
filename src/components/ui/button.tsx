@@ -2,10 +2,10 @@ import React from "react"
 
 const Button:React.FC<{
     onClickHandler:() => void,
-    label: string,
-}> = ({onClickHandler, label}) => {
+    name: string,
+}> = ({onClickHandler, name}) => {
     return <button onClick={onClickHandler}>
-        {label}
+        {name}
     </button>
 }
 

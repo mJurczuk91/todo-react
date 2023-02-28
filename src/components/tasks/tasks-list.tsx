@@ -8,7 +8,7 @@ import { createTask } from "../../store/tasks-list-slice";
 
 
 
-const TasksList = () => {
+const TasksList: React.FC = () => {
     const taskList = useAppSelector(selectTaskList); 
     const tasksListDispatch = useAppDispatch();
 
@@ -26,7 +26,7 @@ const TasksList = () => {
 
     return <>
         {generateList()}
-        <Button onClickHandler={addTaskButtonClicked} label={'Add tasks!'}></Button>
+        <Button onClickHandler={addTaskButtonClicked} name={'Add tasks!'}></Button>
     </>
 }
 
