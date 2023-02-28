@@ -1,5 +1,5 @@
 import { useAppDispatch } from "../../redux-hooks";
-import { updateTaskDescription } from "../../store/tasks-list-slice";
+import { updateTaskDescription, toggleTaskDone, toggleTaskEdit } from "../../store/tasks-list-slice";
 import React, { ReactNode, useState } from "react";
 import { ITask } from "../../types";
 import Card from "../ui/card";
@@ -11,32 +11,54 @@ interface Props {
 const Task: React.FC<Props> = ({ task: { description, id, isBeingEdited, isDone } }) => {
     const dispatch = useAppDispatch();
     const [descriptionInputValue, setDescriptionInputValue] = useState<string>(description);
+    const [descriptionValidationError, setDescriptionValidationError] = useState<{isSet: boolean, value: string | null}>({isSet: false, value: null});
+    const [descriptionInputWasTouched, setDescriptionInputWasTouched] = useState<boolean>(false);
 
-    const formSubmitHandler = (e: React.FormEvent) => {
+    const descriptionFormSubmitHandler = (e: React.FormEvent) => {
         e.preventDefault();
         dispatch(updateTaskDescription({ id, description: descriptionInputValue }));
     }
 
     const descriptionChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setDescriptionInputValue(e.target.value);
+        if(!descriptionInputWasTouched) setDescriptionInputWasTouched(true);
+        const description = e.target.value.trim();
+        setDescriptionInputValue(description);
+        validateTaskDescription(description);
+    }
+
+    const doneCheckedHandler = () => {
+        dispatch(toggleTaskDone({id}));
+    }
+
+    const toggleEditHandler = () => {
+        dispatch(toggleTaskEdit({id}));
+    }
+
+    const validateTaskDescription = (description: string) => {
+        if(description.length < 1){
+            setDescriptionValidationError({isSet: true, value: 'Description needs to be at least 1 character long'});
+        }
+        else setDescriptionValidationError({isSet: false, value: null});
     }
 
     const generateContent = () => {
+        console.log(`generate content for id ${id} was evaluated`);
         if (!isBeingEdited) return <Card>
             <div>
-                <label>Task:</label><p>{description}</p>
-                <label htmlFor="done-checkbox">Done?</label>
-                <input type={"checkbox"} defaultChecked={isDone} />
+                <label>Task:</label><p style={isDone ? {textDecorationLine: 'line-through'} : {}}>{description}</p>
+                <label htmlFor={`done-checkbox-${id}`}>Done?</label>
+                <input id={`done-checkbox-${id}`} type={"checkbox"} checked={isDone} onChange={doneCheckedHandler} />
+                <button onClick={toggleEditHandler}>Edit task</button>
             </div>
         </Card>
         else return <Card>
             <div>
-                <form name={`form task ${id}`} onSubmit={formSubmitHandler}>
-                    <input type="submit" value="Save" />
-                    <input value={descriptionInputValue} name="task-description" type="text" placeholder="Enter task description" onChange={e => { descriptionChangeHandler(e) }} />
+                <form name={`task-edit-form-${id}`} onSubmit={descriptionFormSubmitHandler}>
+                    <button disabled={descriptionValidationError.isSet || !descriptionInputWasTouched} type="submit">Save</button>
+                    <input value={descriptionInputValue} aria-label="task-description-input" type="text" placeholder="Enter task description" onChange={e => { descriptionChangeHandler(e) }} />
                 </form>
-                <label htmlFor="done-checkbox">Done?</label>
-                <input name="done-checkbox" type="checkbox" defaultChecked={isDone} />
+                <label htmlFor={`done-checkbox-${id}`}>Done?</label>
+                <input id={`done-checkbox-${id}`} type="checkbox" defaultChecked={isDone} />
             </div>
         </Card>
     }

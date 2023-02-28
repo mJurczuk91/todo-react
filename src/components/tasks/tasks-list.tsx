@@ -1,7 +1,6 @@
 import React from "react";
 import Card from "../ui/card";
 import Task from "./task";
-import Button from "../ui/button";
 import { useAppDispatch, useAppSelector } from "../../redux-hooks";
 import { selectTaskList } from "../../store/tasks-list-slice";
 import { createTask } from "../../store/tasks-list-slice";
@@ -26,7 +25,7 @@ const TasksList: React.FC = () => {
 
     return <>
         {generateList()}
-        <Button onClickHandler={addTaskButtonClicked} name={'Add tasks!'}></Button>
+        <button onClick={addTaskButtonClicked}>Add tasks!</button>
     </>
 }
 

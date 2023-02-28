@@ -37,10 +37,20 @@ const TasksListSlice = createSlice({
                 return task.id === action.payload.id ? {...task, description: action.payload.description, isBeingEdited: false} : task
             });
         },
+        toggleTaskDone(state, action:PayloadAction<{id: number}>){
+            state.value = state.value.map((task) => {
+                return task.id === action.payload.id ? {...task, isDone: !task.isDone} : task;
+            });
+        },
+        toggleTaskEdit(state, action:PayloadAction<{id: number}>){
+            state.value = state.value.map((task) => {
+                return task.id === action.payload.id ? {...task, isBeingEdited: !task.isBeingEdited} : task;
+            });
+        },
     }
 })
 
-export const {createTask, removeTask, updateTaskDescription} = TasksListSlice.actions;
+export const {createTask, removeTask, updateTaskDescription, toggleTaskDone, toggleTaskEdit} = TasksListSlice.actions;
 export const selectTaskList = (state: RootState) => state.tasksList.value;
 export default TasksListSlice.reducer;
 

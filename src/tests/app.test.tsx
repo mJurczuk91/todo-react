@@ -1,8 +1,8 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { queryByRole, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import { act } from 'react-dom/test-utils';
+import { keyboard } from '@testing-library/user-event/dist/keyboard';
 
 describe('TASK_TESTS', () => {
   beforeEach(() => {
@@ -34,7 +34,7 @@ describe('TASK_TESTS', () => {
   });
 
   test('editing and saving a task persists task state', () => {
-    const taskTextInput = screen.getByPlaceholderText('Enter task description');
+    const taskTextInput = screen.getByRole('textbox', {name: 'task-description-input'});
     const saveChangesButton = screen.getByText('Save');
 
     act(()=>{
@@ -46,5 +46,46 @@ describe('TASK_TESTS', () => {
     expect(screen.queryByText('hey')).toBeInTheDocument();
   });
 
+  test('setting tasks done checkbox renders the description with a line-through text decoration', () => {
+    const description = screen.queryByText('hey');
+    const checkbox = screen.getByLabelText('Done?');
+
+    act(() => {
+      userEvent.click(checkbox);
+    });
+
+    expect(description).toHaveStyle('text-decoration-line: line-through');
+  });
+
+  test('clicking edit button brings up task edit form', () => {
+    expect(screen.queryByRole('form')).not.toBeInTheDocument();
+    const edit = screen.getByRole('button', {name: 'Edit task'});
+
+    act(() => {
+      userEvent.click(edit);
+    });
+
+    expect(screen.queryByRole('form')).toBeInTheDocument();
+  });
+
+  test('task being done should be remembered and displayed correctly in edit form', () => {
+    expect(screen.queryByRole('form')).toBeInTheDocument();
+    const checkbox = screen.getByLabelText('Done?');
+    expect(checkbox).toBeChecked();
+  });
+
+  test('edit form save button should be disabled if description form field is empty', () => {
+    const taskTextInput = screen.getByRole('textbox', {name: 'task-description-input'});
+    const saveButton = screen.getByRole('button', {name: 'Save'});
+    
+    act(() => {
+      userEvent.click(taskTextInput);
+      userEvent.keyboard('{backspace}');
+      userEvent.keyboard('{backspace}');
+      userEvent.keyboard('{backspace}');
+    })
+
+    expect(saveButton).toBeDisabled();
+  })
 })
 
