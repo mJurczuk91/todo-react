@@ -29,8 +29,13 @@ describe('TASK_TESTS', () => {
     expect(screen.queryByRole('form')).toBeInTheDocument();
   });
 
-  test('adding a task removes no tasks yet information', () => {
+  test('adding a task removes the no tasks yet text', () => {
     expect(screen.queryByText('No tasks yet...')).not.toBeInTheDocument();
+  });
+
+  test('save task button is disabled by default when the form is empty', () => {
+    const addTaskButton = screen.getByRole('button', {name: "Save"});
+    expect(addTaskButton).toBeDisabled();
   });
 
   test('editing and saving a task persists task state', () => {
@@ -40,7 +45,7 @@ describe('TASK_TESTS', () => {
     act(()=>{
       userEvent.type(taskTextInput, 'hey');
       userEvent.click(saveChangesButton);
-    })
+    });
 
     expect(screen.queryByRole('form')).not.toBeInTheDocument();
     expect(screen.queryByText('hey')).toBeInTheDocument();
@@ -74,18 +79,32 @@ describe('TASK_TESTS', () => {
     expect(checkbox).toBeChecked();
   });
 
-  test('edit form save button should be disabled if description form field is empty', () => {
+  test('edit form save button should be disabled if description form field is made empty again', () => {
     const taskTextInput = screen.getByRole('textbox', {name: 'task-description-input'});
     const saveButton = screen.getByRole('button', {name: 'Save'});
     
     act(() => {
-      userEvent.click(taskTextInput);
-      userEvent.keyboard('{backspace}');
-      userEvent.keyboard('{backspace}');
-      userEvent.keyboard('{backspace}');
-    })
-
+      userEvent.type(taskTextInput, '{backspace}');
+      userEvent.type(taskTextInput, '{backspace}');
+      userEvent.type(taskTextInput, '{backspace}');
+    });
     expect(saveButton).toBeDisabled();
+    expect(saveButton).toBeInTheDocument();
   })
-})
+
+  test('after the form was emptied a warning should be displayed telling user that the input should be at least 1 character long', () => {
+    const taskTextInput = screen.getByRole('textbox', {name: 'task-description-input'});
+
+    act(() => {
+      userEvent.type(taskTextInput, '{backspace}');
+      userEvent.type(taskTextInput, '{backspace}');
+      userEvent.type(taskTextInput, '{backspace}');
+    });
+    
+    const errorMsg = screen.getByText('Description needs to be at least 1 character long')
+    expect(errorMsg).toBeInTheDocument();
+  });
+});
+
+
 
