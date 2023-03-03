@@ -14,7 +14,7 @@ const Task: React.FC<Props> = ({ task: { description, id, isBeingEdited, isDone 
     const dispatch = useAppDispatch();
     const [descriptionInputValue, setDescriptionInputValue] = useState<string>(description);
     const [descriptionValidationError, setDescriptionValidationError] = useState<IError>({errorMsg: '', id: '', isSet: false, });
-    const [descriptionInputWasTouched, setDescriptionInputWasTouched] = useState<boolean>(false);
+    const [descriptionInputWasTouched, setDescriptionInputWasTouched] = useState<boolean>(description.length > 0);
 
     const descriptionFormSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -22,10 +22,9 @@ const Task: React.FC<Props> = ({ task: { description, id, isBeingEdited, isDone 
     };
 
     const descriptionChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!descriptionInputWasTouched) setDescriptionInputWasTouched(true);
-        const description = e.target.value.trim();
-        setDescriptionInputValue(description);
-        validateTaskDescription(description);
+        if(!descriptionInputWasTouched) {setDescriptionInputWasTouched(true);}
+        setDescriptionInputValue(e.target.value);
+        validateTaskDescription(e.target.value);
     };
 
     const doneCheckedHandler = () => {

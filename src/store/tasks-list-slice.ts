@@ -3,14 +3,14 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "./store";
 import { ITask } from "../types";
 
-type TasksList = {
+export interface ITasksList {
     value: ITask[],
     id: number,
 }
 
-const initialState: TasksList = {
+const initialState: ITasksList = {
     value: [],
-    id: 1,
+    id: 0,
 }
 
 const TasksListSlice = createSlice({

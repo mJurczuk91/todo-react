@@ -1,60 +1,77 @@
-import { queryByRole, render, screen } from '@testing-library/react';
+import { cleanup, queryByRole, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import App from '../App';
 import { act } from 'react-dom/test-utils';
-import { keyboard } from '@testing-library/user-event/dist/keyboard';
 
-//test 123
+import { renderTaskList, getEditButton, getSaveButton, getAddTaskButton } from './task-test-utils';
+
 
 describe('TASK_TESTS', () => {
-  beforeEach(() => {
-    render(<App />);
-  })
-
   test('renders add task button', () => {
-    const addTaskButton = screen.getByText('Add tasks!');
+    renderTaskList();
+    const addTaskButton = getAddTaskButton();
     expect(addTaskButton).toBeInTheDocument();
   });
-  
-  test('displays information if there are no tasks yet', ()=>{
+
+  ////
+  test('displays information if there are no tasks yet', () => {
+    renderTaskList();
     expect(screen.queryByText('No tasks yet...')).toBeInTheDocument();
   });
-  
-  test('clicking add task button displays task add form',() => {
-    const addTaskButton = screen.getByText('Add tasks!');
+
+  ////
+  test('clicking add task button displays task add form', () => {
+    renderTaskList();
+    const addTaskButton = getAddTaskButton();
     expect(screen.queryByRole('form')).not.toBeInTheDocument();
-  
+
     act(() => {
       userEvent.click(addTaskButton);
     })
-  
+
     expect(screen.queryByRole('form')).toBeInTheDocument();
   });
 
+  ////
   test('adding a task removes the no tasks yet text', () => {
+    renderTaskList(1);
     expect(screen.queryByText('No tasks yet...')).not.toBeInTheDocument();
   });
 
-  test('save task button is disabled by default when the form is empty', () => {
-    const addTaskButton = screen.getByRole('button', {name: "Save"});
-    expect(addTaskButton).toBeDisabled();
+  ////
+  test('save task button is disabled by default when user adds a new task', () => {
+    renderTaskList();
+    const addTaskButton = getAddTaskButton();
+
+    act(() => {
+      userEvent.click(addTaskButton);
+    })
+
+    const saveTaskButton = screen.getByRole('button', { name: "Save" });
+    expect(saveTaskButton).toBeDisabled();
   });
 
+  ////
   test('editing and saving a task persists task state', () => {
-    const taskTextInput = screen.getByRole('textbox', {name: 'task-description-input'});
-    const saveChangesButton = screen.getByText('Save');
+    renderTaskList(1);
+    const editButton = getEditButton();
+    act(() => userEvent.click(editButton));
 
-    act(()=>{
+    const taskTextInput = screen.getByRole('textbox', { name: 'task-description-input' });
+    const saveChangesButton = getSaveButton();
+
+    act(() => {
       userEvent.type(taskTextInput, 'hey');
       userEvent.click(saveChangesButton);
     });
-
+    
     expect(screen.queryByRole('form')).not.toBeInTheDocument();
-    expect(screen.queryByText('hey')).toBeInTheDocument();
+    expect(screen.queryByText('testhey')).toBeInTheDocument();
   });
 
+  ////
   test('setting tasks done checkbox renders the description with a line-through text decoration', () => {
-    const description = screen.queryByText('hey');
+    renderTaskList(1)
+    const description = screen.queryByText('test');
     const checkbox = screen.getByLabelText('Done?');
 
     act(() => {
@@ -64,9 +81,11 @@ describe('TASK_TESTS', () => {
     expect(description).toHaveStyle('text-decoration-line: line-through');
   });
 
+  ////
   test('clicking edit button brings up task edit form', () => {
+    renderTaskList(1);
     expect(screen.queryByRole('form')).not.toBeInTheDocument();
-    const edit = screen.getByRole('button', {name: 'Edit task'});
+    const edit = getEditButton();
 
     act(() => {
       userEvent.click(edit);
@@ -75,38 +94,67 @@ describe('TASK_TESTS', () => {
     expect(screen.queryByRole('form')).toBeInTheDocument();
   });
 
+  ////
   test('task being done should be remembered and displayed correctly in edit form', () => {
-    expect(screen.queryByRole('form')).toBeInTheDocument();
+    renderTaskList(1);
+    const edit = getEditButton();
     const checkbox = screen.getByLabelText('Done?');
+
+    act(() => {
+      userEvent.click(checkbox);
+    });
+
+    act(() => {
+      userEvent.click(edit);
+    });
+
+    
     expect(checkbox).toBeChecked();
   });
 
+  ////
   test('edit form save button should be disabled if description form field is made empty again', () => {
-    const taskTextInput = screen.getByRole('textbox', {name: 'task-description-input'});
-    const saveButton = screen.getByRole('button', {name: 'Save'});
-    
+    renderTaskList(1);
+    const edit = getEditButton();
+
+    act(() => {
+      userEvent.click(edit);
+    });
+
+    const taskTextInput = screen.getByRole('textbox', { name: 'task-description-input' });
+    const saveButton = getSaveButton();
+
     act(() => {
       userEvent.type(taskTextInput, '{backspace}');
       userEvent.type(taskTextInput, '{backspace}');
       userEvent.type(taskTextInput, '{backspace}');
+      userEvent.type(taskTextInput, '{backspace}');
     });
+
     expect(saveButton).toBeDisabled();
     expect(saveButton).toBeInTheDocument();
   })
 
+  ////
   test('after the form was emptied a warning should be displayed telling user that the input should be at least 1 character long', () => {
-    const taskTextInput = screen.getByRole('textbox', {name: 'task-description-input'});
+    renderTaskList(1);
+    const edit = getEditButton();
+
+    act(() => {
+      userEvent.click(edit);
+    });
+
+    const taskTextInput = screen.getByRole('textbox', { name: 'task-description-input' });
 
     act(() => {
       userEvent.type(taskTextInput, '{backspace}');
       userEvent.type(taskTextInput, '{backspace}');
       userEvent.type(taskTextInput, '{backspace}');
+      userEvent.type(taskTextInput, '{backspace}');
     });
-    
+
     const errorMsg = screen.getByText('Description needs to be at least 1 character long')
     expect(errorMsg).toBeInTheDocument();
   });
+  
 });
-
-
-
