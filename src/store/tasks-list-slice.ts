@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "./store";
-import { ITask } from "../types";
+import { ITask } from "../types/types";
 
 export interface ITasksList {
     value: ITask[],
@@ -27,7 +27,7 @@ const TasksListSlice = createSlice({
             state.id++;
             state.value = state.value.concat(task);
         },
-        removeTask(state, action:PayloadAction<ITask>){
+        removeTask(state, action:PayloadAction<{id: number}>){
             state.value = state.value.filter(item => { return (
                 item.id !== action.payload.id
             )});

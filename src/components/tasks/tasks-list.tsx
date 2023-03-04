@@ -4,11 +4,14 @@ import Task from "./task";
 import { useAppDispatch, useAppSelector } from "../../redux-hooks";
 import { selectTaskList } from "../../store/tasks-list-slice";
 import { createTask } from "../../store/tasks-list-slice";
+import { selectHeaderSearch } from "../../store/header-search-slice";
 
 
 
 const TasksList: React.FC = () => {
     const taskList = useAppSelector(selectTaskList); 
+    const searchValue = useAppSelector(selectHeaderSearch);
+    console.log(searchValue);
     const tasksListDispatch = useAppDispatch();
 
     const addTaskButtonClicked = () => {
@@ -19,7 +22,7 @@ const TasksList: React.FC = () => {
         if(taskList.length === 0){
             return <Card><p>No tasks yet...</p></Card>;
         } else {
-            return taskList.map(task => <Task key={task.id} task={task} />)
+            return taskList.filter(task => { return task.description.includes(searchValue) || task.isBeingEdited} ).map(task => <Task key={task.id} task={task} />)
         }
     }
 

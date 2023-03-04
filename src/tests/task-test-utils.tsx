@@ -2,12 +2,12 @@ import { render, screen } from '@testing-library/react';
 
 import { Provider } from 'react-redux';
 import TasksList from '../components/tasks/tasks-list';
+import Header from '../components/header/header';
 
 import { configureStore } from '@reduxjs/toolkit';
 import { default as tasksList } from '../store/tasks-list-slice'
-import { useAppDispatch } from '../redux-hooks';
-import { createTask } from '../store/tasks-list-slice';
-import { ITask } from '../types';
+import {default as headerSearch} from '../store/header-search-slice';
+
 import { ITasksList } from '../store/tasks-list-slice';
 
 const generateTasks = (numberOfTasks: number): ITasksList => {
@@ -33,6 +33,7 @@ export const renderTaskList = (withTasks: number = 0) => {
   configureStore({
     reducer: {
       tasksList,
+      headerSearch,
     },
     preloadedState: {tasksList: generateTasks(withTasks)},
   })
@@ -40,11 +41,13 @@ export const renderTaskList = (withTasks: number = 0) => {
   configureStore({
     reducer: {
       tasksList,
+      headerSearch,
     }
   });
 
   render(<>
     <Provider store={store}>
+      <Header />
       <TasksList />
     </Provider>
   </>);
