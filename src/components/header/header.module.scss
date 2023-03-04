@@ -1,0 +1,57 @@
+@import '../../sass/variables.scss';
+
+.header {
+    display: flex;
+    flex-direction: column;
+    background-color: $color-primary;
+    height: 14vh;
+    padding: 1em;
+}
+
+.logo {
+    color: $color-font-primary;
+    width: fit-content;
+    margin: auto;
+}
+
+.searchBar{
+    display: flex;
+    justify-content: center;
+    margin-left: -1em;
+}
+
+.searchBar label {
+    color: $color-font-primary;
+    font-size: large;
+    font-weight: 600;
+    padding: 0.5em;
+}
+
+.searchBar input {
+    background-color: $color-font-primary;
+    font-size: medium;
+    padding: 0.5em;
+    border-radius: 2em;
+    border: none;
+}
+
+.searchBar input:focus {
+    outline: $color-success solid 1px;
+    box-shadow: 0px 0px 6px 1px rgba(229, 242, 201, 1);
+}
+
+.button {
+    background-color: $color-font-primary;
+    color: $color-font-secondary;
+    padding: 0.5em;
+    margin-left: 1em;
+    border-radius: 1em;
+    border: none;
+    font-size: medium;
+}
+
+.button:hover {
+    background-color: $color-secondary;
+    box-shadow: 0px 0px 12px 1px rgba(229, 242, 201, 1);
+    cursor: pointer;
+}

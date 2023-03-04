@@ -11,12 +11,6 @@ import { selectHeaderSearch } from "../../store/header-search-slice";
 const TasksList: React.FC = () => {
     const taskList = useAppSelector(selectTaskList); 
     const searchValue = useAppSelector(selectHeaderSearch);
-    console.log(searchValue);
-    const tasksListDispatch = useAppDispatch();
-
-    const addTaskButtonClicked = () => {
-        tasksListDispatch(createTask());
-    }
     
     const generateList = () => {
         if(taskList.length === 0){
@@ -28,7 +22,6 @@ const TasksList: React.FC = () => {
 
     return <>
         {generateList()}
-        <button onClick={addTaskButtonClicked}>Add tasks!</button>
     </>
 }
 
