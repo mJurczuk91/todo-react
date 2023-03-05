@@ -1,9 +1,8 @@
 import React from "react";
 import Card from "../ui/card";
 import Task from "./task";
-import { useAppDispatch, useAppSelector } from "../../redux-hooks";
+import {  useAppSelector } from "../../redux-hooks";
 import { selectTaskList } from "../../store/tasks-list-slice";
-import { createTask } from "../../store/tasks-list-slice";
 import { selectHeaderSearch } from "../../store/header-search-slice";
 
 

@@ -61,8 +61,8 @@ const Task: React.FC<Props> = ({ task: { description, id, isBeingEdited, isDone 
                     <div>
                         <button disabled={descriptionValidationError.isSet || !descriptionInputWasTouched} type="submit">Save</button>
                         <input autoFocus value={descriptionInputValue} aria-label="task-description-input" type="text" placeholder="Enter task description" onChange={e => { descriptionChangeHandler(e) }} />
+                        {descriptionValidationError.isSet && <Error error={descriptionValidationError} />}
                     </div>
-                    {descriptionValidationError.isSet && <Error error={descriptionValidationError} />}
                 </form>
                 <label htmlFor={`done-checkbox-${id}`}>Done?</label>
                 <input id={`done-checkbox-${id}`} type="checkbox" defaultChecked={isDone} />
@@ -71,9 +71,9 @@ const Task: React.FC<Props> = ({ task: { description, id, isBeingEdited, isDone 
         </Card>
     };
 
-    return <div>
+    return <>
         {generateContent()}
-    </div>
+    </>
 }
 
 export default Task;

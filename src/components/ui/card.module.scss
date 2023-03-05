@@ -1,0 +1,58 @@
+@import '../../sass/variables.scss';
+.cardSuccess{
+    background-color: $color-secondary;  
+    width: 33%;
+    min-height: 6em;
+
+    margin: 2em;
+    padding: 1em;
+
+    border: 1px solid $color-success; 
+    box-shadow: 6px 6px 14px 1px $color-success;
+}
+
+.cardSuccess > div{
+    margin: 0.5em;
+    padding: 0.25em;
+    border-right: 0.25em solid $color-success;
+    min-height: 4em;
+}
+
+
+.cardError{
+    background-color: $color-secondary;    
+    width: 33%;
+    min-height: 6em;
+
+    margin: 2em;
+    padding: 1em;
+
+    border: 1px solid $color-failure; 
+    box-shadow: 6px 6px 14px 1px $color-failure;
+}
+
+.cardError > div{
+    margin: 0.5em;
+    padding: 0.25em;
+    border-right: 0.25em solid $color-failure;
+    min-height: 4em;
+}
+
+.card{
+    background-color: $color-secondary;    
+    width: 33%;
+    min-height: 6em;
+
+    margin: 2em;
+    padding: 1em;
+
+    border: 1px solid $color-primary; 
+}
+
+.card > div{
+    color: $color-font-secondary;
+    margin: 0.5em;
+    padding: 0.25em;
+    border-right: 0.25em solid $color-primary;
+    min-height: 4em;
+}
