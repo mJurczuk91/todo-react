@@ -1,9 +1,11 @@
-import { ITaskInputError } from "../../types/types";
+import { ReactNode } from "react";
+import classes from './error.module.scss';
 
-const Error:React.FC<{error: ITaskInputError}> = ({error: {id, errorMsg}}) => {
-    return <div>
-        <p>{errorMsg}</p>
-    </div>
+const Error:React.FC<{children?: ReactNode, errorMsg: string}> = ({errorMsg}) => { 
+    
+    return <p className={classes.error}>
+        !{" " + errorMsg}
+    </p>
 }
 
 export default Error;

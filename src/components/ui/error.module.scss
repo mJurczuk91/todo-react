@@ -1,0 +1,13 @@
+@import '../../sass/variables.scss';
+
+.error{
+    margin: 0.2em;
+    padding: 0;
+    width: fit-content;
+    text-decoration: $color-failure solid underline;
+}
+
+.error::first-letter{
+    font-weight: 900;
+    color: $color-failure;
+}

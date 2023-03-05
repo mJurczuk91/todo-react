@@ -1,11 +1,11 @@
 @import '../../sass/variables.scss';
 .cardSuccess{
     background-color: $color-secondary;  
-    width: 33%;
-    min-height: 6em;
+    width: 40%;
+    min-height: 7rem;
 
-    margin: 2em;
-    padding: 1em;
+    margin-top: 2rem;
+    padding: 1rem;
 
     border: 1px solid $color-success; 
     box-shadow: 6px 6px 14px 1px $color-success;
@@ -13,46 +13,60 @@
 
 .cardSuccess > div{
     margin: 0.5em;
-    padding: 0.25em;
-    border-right: 0.25em solid $color-success;
-    min-height: 4em;
+    padding-top: 2%;
+    padding-left: 1.5rem;
+    border-left: 0.25em solid $color-success;
+    min-height: 7rem;
 }
 
+.cardSuccess:last-of-type {
+    margin-bottom: 3em;
+}
 
 .cardError{
     background-color: $color-secondary;    
-    width: 33%;
-    min-height: 6em;
+    width: 40%;
+    min-height: 7rem;
 
-    margin: 2em;
-    padding: 1em;
+    margin-top: 2rem;
+    padding: 1rem;
 
     border: 1px solid $color-failure; 
     box-shadow: 6px 6px 14px 1px $color-failure;
 }
 
 .cardError > div{
-    margin: 0.5em;
-    padding: 0.25em;
-    border-right: 0.25em solid $color-failure;
-    min-height: 4em;
+    margin: 0.5rem;
+    padding-top: 2%;
+    padding-left: 1.5rem;
+    border-left: 0.25rem solid $color-failure;
+    min-height: 7rem;
+}
+
+.cardError:last-of-type {
+    margin-bottom: 3em;
 }
 
 .card{
     background-color: $color-secondary;    
-    width: 33%;
-    min-height: 6em;
+    width: 40%;
+    min-height: 7rem;
 
-    margin: 2em;
-    padding: 1em;
+    margin-top: 2rem;
+    padding: 1rem;
 
     border: 1px solid $color-primary; 
 }
 
 .card > div{
     color: $color-font-secondary;
-    margin: 0.5em;
-    padding: 0.25em;
-    border-right: 0.25em solid $color-primary;
-    min-height: 4em;
+    margin: 0.5rem;
+    padding-top: 2%;
+    padding-left: 1.5rem;
+    border-left: 0.25rem solid $color-primary;
+    min-height: 7rem;
+}
+
+.card:last-of-type {
+    margin-bottom: 3em;
 }

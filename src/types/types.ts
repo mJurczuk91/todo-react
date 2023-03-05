@@ -6,7 +6,7 @@ export interface ITask {
 }
 
 export interface ITaskInputError {
-    errorMsg: string,
+    msg: string,
     id: string,
     isSet: boolean,
 };

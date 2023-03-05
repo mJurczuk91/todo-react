@@ -9,9 +9,9 @@ type Props = {
 
 const Card: React.FC<Props> = ({ children, err = false, success = false }) => {
     const getStyle = () => {
-        return success ? classes.cardSuccess
-            : err ? classes.cardError
-                : classes.card
+        return success ? classes.cardSuccess :
+                   err ? classes.cardError :
+                         classes.card
     }
 
     return <div className={getStyle()}>
