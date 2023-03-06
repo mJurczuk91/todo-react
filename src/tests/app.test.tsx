@@ -153,7 +153,7 @@ describe('TASK_TESTS', () => {
       userEvent.type(taskTextInput, '{backspace}');
     });
 
-    const errorMsg = screen.getByText('Description needs to be at least 1 character long')
+    const errorMsg = screen.getByText(/Description needs to be at least 1 character long/i)
     expect(errorMsg).toBeInTheDocument();
   });
 
